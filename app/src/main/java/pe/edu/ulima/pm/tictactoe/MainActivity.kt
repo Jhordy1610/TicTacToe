@@ -54,13 +54,18 @@ class MainActivity : AppCompatActivity() {
             reset()
         }
     }
-
+    //Esta funcion sera ejecutada cada vez que se presiona un boton
     fun buttonClick(btn: Button) {
+        //Se verifica que el juego necesita reiniciase
         if (reinicia == false) {
             if (btn.text == "") {
+                //Cuando uno de los botones esta vacio
                 if (turno == "j1") {
+                    //Cambio de turno
                     turno = "j2"
+                    //El boton pasa a tener el texto del jugador correspondiente
                     btn.text = "$jugador_1"
+                    //Se cambia el textView para indicar al otro jugador
                     textView.text = "Le toca al jugador $jugador_2.."
                 } else {
                     turno = "j1"
@@ -68,6 +73,7 @@ class MainActivity : AppCompatActivity() {
                     textView.text = "Le toca al jugador $jugador_1.."
                 }
             }
+            //VERIFICAR SI GANO
             win()
         } else {
             cambiarLetras()
@@ -76,7 +82,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //Esta funcion determinara si un jugador gano o si resulto el juego en empate.
+    //Verifica si la matriz de 9x9 tiene los siguientes estado
+    //Posiblilidad 1: Gano un jugador, "X" se entiendo como jugador 1 o 2
+    //Estados validos
+    /*Arreglo       Arreglo         Arreglo         Arreglo
+    * Vertical      Horizontal      Diagonal(1)     Diagonal(2)
+    * | |X| |       | | | |         |X| | |         | | |X|
+    * | |X| |       |X|X|X|         | |X| |         | |X| |
+    * | |X| |       | | | |         | | |X|         |X| | |
+    * Si se da esta condicion, se debera de indicar el ganador y reiniciar el juego al siguiente
+    * toque
+    * */
+    //Posibilidad 2: Empate
+    //Se verificara si los botones no esta vacios. Si todos los botones poseen un texto significa
+    //que los jugadores empataron, se debe de indicar empate y el juego debe de reiniciarse al
+    //siguiente toque
     fun win() {
+            //HORIZONTAL
         if ((b1.text == "$jugador_2" && b2.text == "$jugador_2" && b3.text == "$jugador_2") ||
             (b4.text == "$jugador_2" && b5.text == "$jugador_2" && b6.text == "$jugador_2") ||
             (b7.text == "$jugador_2" && b8.text == "$jugador_2" && b9.text == "$jugador_2") ||
@@ -123,7 +146,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
+    //Esta funcion reininicara el texto de los botones y el valor booleano
     fun reset() {
         if (reinicia == true) {
             b1.text = ""
@@ -139,7 +162,7 @@ class MainActivity : AppCompatActivity() {
             reinicia = false
         }
     }
-
+    //Cambiara los botones a un mismo color aleatorio
     fun btnsFondo() {
         val rnd = Random()
         //alpha = transparencia de un píxel, rojo/verde/azul, rnd toma valores del 0 al 255
@@ -154,11 +177,15 @@ class MainActivity : AppCompatActivity() {
         b8.setBackgroundColor(color)
         b9.setBackgroundColor(color)
     }
-
+    //Asignara al jugador 1 y 2 letras diferentes aleatorias
     fun cambiarLetras() {
         val alphabets = ('A'..'Z')
         jugador_1 = alphabets.random()
         jugador_2 = alphabets.random()
+        while(jugador_2 == jugador_1) {
+            jugador_2 = alphabets.random()
+        }
+
     }
 
 
