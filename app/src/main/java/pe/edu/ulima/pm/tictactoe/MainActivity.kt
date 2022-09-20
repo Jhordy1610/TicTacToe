@@ -11,6 +11,7 @@ import java.util.Random // importamos la clase Random de java
 
 class MainActivity : AppCompatActivity() {
 
+    //Inicializamos las variables globales a nivel de la clase
     var turno = "j1"
     var jugador_1 = 'O'
     var jugador_2 = 'X'
@@ -20,8 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        textView.text = "Le toca al jugador ${jugador_1}.."
-
+        //La función buttonClick() se ejecutará al hacer click en el respectivo botón
         b1.setOnClickListener() {
             buttonClick(b1)
         }
@@ -50,31 +50,33 @@ class MainActivity : AppCompatActivity() {
             buttonClick(b9)
         }
 
+        //La función reset() se ejecutará al hacer click en el cuadro de texto
         textView.setOnClickListener() {
             reset()
         }
     }
-    //Esta funcion sera ejecutada cada vez que se presiona un boton
+
+    //Esta funcion será ejecutada cada vez que se haga click en un botón
     fun buttonClick(btn: Button) {
-        //Se verifica que el juego necesita reiniciase
+        //Se verifica si el juego necesita reiniciarse
         if (reinicia == false) {
+            //Cuando uno de los botones esta vacío
             if (btn.text == "") {
-                //Cuando uno de los botones esta vacio
                 if (turno == "j1") {
-                    //Cambio de turno
-                    turno = "j2"
-                    //El boton pasa a tener el texto del jugador correspondiente
-                    btn.text = "$jugador_1"
-                    //Se cambia el textView para indicar al otro jugador
-                    textView.text = "Le toca al jugador $jugador_2.."
+                    turno = "j2" //Cambio de turno
+                    btn.text =
+                        "$jugador_1" //El boton pasa a tener el texto del jugador correspondiente
+                    textView.text =
+                        "Le toca al jugador $jugador_2.." //Se cambia el textView para indicar el turno del otro jugador
                 } else {
                     turno = "j1"
                     btn.text = "$jugador_2"
                     textView.text = "Le toca al jugador $jugador_1.."
                 }
             }
-            //VERIFICAR SI GANO
+            //Por cada turno se verifica si hay un ganador o un posible empate
             win()
+            //Cuando el juego debe reiniciarse, se disparan las 3 funciones
         } else {
             cambiarLetras()
             btnsFondo()
@@ -91,43 +93,43 @@ class MainActivity : AppCompatActivity() {
     * | |X| |       | | | |         |X| | |         | | |X|
     * | |X| |       |X|X|X|         | |X| |         | |X| |
     * | |X| |       | | | |         | | |X|         |X| | |
-    * Si se da esta condicion, se debera de indicar el ganador y reiniciar el juego al siguiente
+    * Si se da esta condición, se debera de indicar el ganador y reiniciar el juego al siguiente
     * toque
     * */
     //Posibilidad 2: Empate
-    //Se verificara si los botones no esta vacios. Si todos los botones poseen un texto significa
+    //Se verificara si los botones no estan vacíos. Si todos los botones poseen un texto significa
     //que los jugadores empataron, se debe de indicar empate y el juego debe de reiniciarse al
-    //siguiente toque
+    //siguiente toque.
     fun win() {
-            //HORIZONTAL
+        //HORIZONTAL
         if ((b1.text == "$jugador_2" && b2.text == "$jugador_2" && b3.text == "$jugador_2") ||
             (b4.text == "$jugador_2" && b5.text == "$jugador_2" && b6.text == "$jugador_2") ||
             (b7.text == "$jugador_2" && b8.text == "$jugador_2" && b9.text == "$jugador_2") ||
             //DIAGONAL
             (b1.text == "$jugador_2" && b5.text == "$jugador_2" && b9.text == "$jugador_2") ||
             (b3.text == "$jugador_2" && b5.text == "$jugador_2" && b7.text == "$jugador_2") ||
-            //COLUMNAS
+            //VERTICAL
             (b1.text == "$jugador_2" && b4.text == "$jugador_2" && b7.text == "$jugador_2") ||
             (b2.text == "$jugador_2" && b5.text == "$jugador_2" && b8.text == "$jugador_2") ||
             (b3.text == "$jugador_2" && b6.text == "$jugador_2" && b9.text == "$jugador_2")
         ) {
-            textView.text = "El jugador $jugador_2 ganó!"
-            reinicia = true
-            turno = "j1"
+            textView.text = "El jugador $jugador_2 ganó!" //Se indica el jugador ganador
+            reinicia = true //La variable global indica que el juego debe reiniciarse
+            turno = "j1" //Luego del reinicio, el turno siempre debe comenzar con j1
         } else if ((b1.text == "$jugador_1" && b2.text == "$jugador_1" && b3.text == "$jugador_1") ||
             (b4.text == "$jugador_1" && b5.text == "$jugador_1" && b6.text == "$jugador_1") ||
             (b7.text == "$jugador_1" && b8.text == "$jugador_1" && b9.text == "$jugador_1") ||
             //DIAGONAL
             (b1.text == "$jugador_1" && b5.text == "$jugador_1" && b9.text == "$jugador_1") ||
             (b3.text == "$jugador_1" && b5.text == "$jugador_1" && b7.text == "$jugador_1") ||
-            //COLUMNAS
+            //VERTICAL
             (b1.text == "$jugador_1" && b4.text == "$jugador_1" && b7.text == "$jugador_1") ||
             (b2.text == "$jugador_1" && b5.text == "$jugador_1" && b8.text == "$jugador_1") ||
             (b3.text == "$jugador_1" && b6.text == "$jugador_1" && b9.text == "$jugador_1")
         ) {
-            textView.text = "El jugador $jugador_1 ganó!"
-            reinicia = true
-            turno = "j1"
+            textView.text = "El jugador $jugador_1 ganó!" //Se indica el jugador ganador
+            reinicia = true //La variable global indica que el juego debe reiniciarse
+            turno = "j1" //Luego del reinicio, el turno siempre debe comenzar con j1
         } else {
             if (
                 b1.text != "" &&
@@ -140,13 +142,14 @@ class MainActivity : AppCompatActivity() {
                 b8.text != "" &&
                 b9.text != ""
             ) {
-                textView.text = "Empate!"
-                reinicia = true
-                turno = "j1"
+                textView.text = "Empate!" //Se indica el empate
+                reinicia = true //La variable global indica que el juego debe reiniciarse
+                turno = "j1" //Luego del reinicio, el turno siempre debe comenzar con j1
             }
         }
     }
-    //Esta funcion reininicara el texto de los botones y el valor booleano
+
+    //Esta funcion reiniciará el texto de los botones a vacío y el valor booleano
     fun reset() {
         if (reinicia == true) {
             b1.text = ""
@@ -162,10 +165,11 @@ class MainActivity : AppCompatActivity() {
             reinicia = false
         }
     }
-    //Cambiara los botones a un mismo color aleatorio
+
+    //Esta función cambiará el fondo de los botones a un mismo color aleatorio
     fun btnsFondo() {
         val rnd = Random()
-        //alpha = transparencia de un píxel, rojo/verde/azul, rnd toma valores del 0 al 255
+        //alpha : transparencia de un píxel. Rojo/verde/azul. rnd toma valores del 0 al 255
         val color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
         b1.setBackgroundColor(color)
         b2.setBackgroundColor(color)
@@ -177,20 +181,18 @@ class MainActivity : AppCompatActivity() {
         b8.setBackgroundColor(color)
         b9.setBackgroundColor(color)
     }
-    //Asignara al jugador 1 y 2 letras diferentes aleatorias
+
+    //Asignará al jugador 1 y 2 nuevas letras diferentes y aleatorias
     fun cambiarLetras() {
-        val alphabets = ('A'..'Z')
+        val alphabets = ('A'..'Z') //Arreglo de letras de A hasta la Z
         jugador_1 = alphabets.random()
         jugador_2 = alphabets.random()
-        while(jugador_2 == jugador_1) {
+        //Si las letras coinciden, se cambia la del jugador 2 hasta ser diferentes
+        while (jugador_2 == jugador_1) {
             jugador_2 = alphabets.random()
         }
 
     }
-
-
-
-
 
 
 }
